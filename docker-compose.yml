@@ -29,8 +29,11 @@ services:
       - DATABASE_URL=file:./dev.db
 
   orders-ms:
-    depends_on:
+    links:
       - orders-db
+    depends_on:
+      orders-db:
+        condition: service_healthy
     build: ./orders-ms
     volumes:
       - ./orders-ms/src:/usr/src/app/src
@@ -52,6 +55,11 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=ordersdb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     
 # =====================================
 # Payments Microservice
