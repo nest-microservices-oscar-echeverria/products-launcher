@@ -72,10 +72,6 @@ services:
       timeout: 10s
       retries: 5
     
-# =====================================
-# Payments Microservice
-# =====================================
-
   payments-ms:
     container_name: payments-ms
     build: ./payments-ms
